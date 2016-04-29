@@ -40,41 +40,11 @@ addEventListener('load', function () {
       , $$actions = $$('#actions .button')
       , $log      =  $('#log')
 
-        //// Create a shapelydee instance. 
+        //// Create a shapelydee instance with two pixels. 
       , shapelydee = new ShapelyDee({
+          pixelCoords: [ 0,1,2,  4,5,6 ]
         })
 
-        //// Reveals the current state of `shapelydee`. 
-      , stringify = function () {
-            $log.innerHTML =
-                'JSON.stringify(shapelydee):\n\n'
-               + JSON.stringify(shapelydee, serializer(), '  ');
-        }
-
-        //// https://github.com/isaacs/json-stringify-safe/blob/master/stringify.js
-      , serializer = function () {
-            var
-                stack = []
-              , keys  = []
-
-              , cycleReplacer = function (key, value) {
-                    if (stack[0] === value) { return '[Circular ~]'; }
-                    return '[Circular ~.' + keys.slice(0, stack.indexOf(value)).join('.') + ']'
-                }
-            ;
-
-            return function (key, value) {
-                if (0 < stack.length) {
-                    var thisPos = stack.indexOf(this);
-                    ~thisPos ? stack.splice(thisPos + 1) : stack.push(this);
-                    ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key);
-                    if (~stack.indexOf(value)) { value = cycleReplacer.call(this, key, value); }
-                } else {
-                    stack.push(value)
-                }
-                return value;
-            }
-        }
     ;
 
     //// Enable the action buttons. 
@@ -82,17 +52,17 @@ addEventListener('load', function () {
         $$actions[i].addEventListener('click', function (event) {
             event.preventDefault();
             try {
-                eval(this.innerHTML);
+                var result = eval(this.innerHTML);
             } catch (error) {
                 $log.innerHTML = 'Error:\n\n' + error;
                 return;
             }
-            stringify();
+            $log.innerHTML = result;
         });
     }
 
-    //// Reveal the initial state of `shapelydee`. 
-    stringify();
+    //// Ready. 
+    $log.innerHTML = 'Ready. ';
 });
   </script>
 </head>
@@ -104,9 +74,10 @@ addEventListener('load', function () {
   </header>
   <main>
     <nav id="actions">
-      <a href="#" class="button">shapelydee.add();</a><a
-         href="#" class="button">shapelydee.read();</a><a
-         href="#" class="button">shapelydee.browse();</a>
+      <a href="#" class="button">shapelydee.add({ a:'pixel', origin:[0,0,0, 0,0,0] });</a><a
+         href="#" class="button">shapelydee.add({ a:'cube' , origin:[1,1,1, 2,2,2] });</a><a
+         href="#" class="button">shapelydee.dump('ascii');</a><a
+         href="#" class="button">shapelydee.dump('led');</a>
     </nav>
     <pre id="log">Loading...</pre>
   </main>

@@ -8,9 +8,9 @@ Prevent properties being accidentally modified or added to the classes.
 @todo automate this
 
     oo.lock ShapelyDee
-    oo.lock SomeClass
-    oo.lock SomeClass.FirstSubClass
-    oo.lock SomeClass.SecondSubClass
+    oo.lock Shape
+    oo.lock Shape.Cube
+    oo.lock Pixel
 
 First, try defining an AMD module, eg for [RequireJS](http://requirejs.org/). 
 

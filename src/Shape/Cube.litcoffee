@@ -1,12 +1,12 @@
-SomeClass
-=========
+Shape.Cube
+==========
 
 
-#### Base class for all classes which ...@todo describe
+#### A shape with six square sides, eight vertices and twelve equal edges
 
-    class SomeClass
-      C: 'SomeClass'
-      toString: -> '[object SomeClass]'
+    class Shape.Cube extends Shape
+      C: 'Shape.Cube'
+      toString: -> '[object Shape.Cube]'
 
 
 #### `constructor()`
@@ -17,8 +17,12 @@ SomeClass
 @todo describe
 
       constructor: (config={}) ->
-        M = '/shapelydee/src/SomeClass.litcoffee
-          SomeClass()\n  '
+        M = '/shapelydee/src/Shape/Cube.litcoffee
+          Shape.Cube()\n  '
+
+Call `Shape::constructor(config)`. This will create the `@[oo._]` object. 
+
+        super config
 
 
 Make `v()`, a function for checking that `config` properties are ok. 
@@ -43,10 +47,6 @@ From `config.x`, @todo describe
 Private Properties
 ------------------
 
-Create `@[oo._]`, a non-enumerable property with an unguessable name. 
-
-        oo.define @, oo._, {}, 'private'
-
 
 #### `_x <null>`
 @todo describe
@@ -58,7 +58,7 @@ Create `@[oo._]`, a non-enumerable property with an unguessable name.
 
 Prevent properties being accidentally modified or added to the instance. 
 
-        if 'SomeClass' == @C then oo.lock @
+        if 'Shape.Cube' == @C then oo.lock @
 
 
 
@@ -74,8 +74,8 @@ Public Methods
 @todo describe
 
       xx: (yy) ->
-        M = '/shapelydee/src/SomeClass.litcoffee
-          SomeClass::xx()\n  '
+        M = '/shapelydee/src/Shape/Cube.litcoffee
+          Shape::xx()\n  '
 
 Check that the arguments are valid, or fallback to defaults if undefined. 
 
@@ -94,9 +94,9 @@ Public Static Functions
 
 @todo describe
 
-    SomeClass.xx = (yy) ->
-      M = '/shapelydee/src/SomeClass.litcoffee
-        SomeClass.xx()\n  '
+    Shape.Cube.xx = (yy) ->
+      M = '/shapelydee/src/Shape/Cube.litcoffee
+        Shape.Cube.xx()\n  '
 
 Check that the arguments are valid, or fallback to defaults if undefined. 
 

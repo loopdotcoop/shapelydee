@@ -1,28 +1,24 @@
-SomeClass.SecondSubClass
-========================
+Pixel
+=====
 
 
-#### Inherits from `SomeClass` ...@todo describe
+#### An RGB ‘read point’, used to represent a real-world LED
 
-    class SomeClass.SecondSubClass extends SomeClass
-      C: 'SomeClass.SecondSubClass'
-      toString: -> '[object SomeClass.SecondSubClass]'
+    class Pixel
+      C: 'Pixel'
+      toString: -> '[object Pixel]'
 
 
 #### `constructor()`
-- `config <object> {}`       initial configuration
-  - `config.x <number> 123`  @todo describe
-- `<undefined>`              does not return anything
+- `config <object> {}`          initial configuration
+  - `config.origin <[number]>`  @todo describe
+- `<undefined>`                 does not return anything
 
 @todo describe
 
       constructor: (config={}) ->
-        M = '/shapelydee/src/SomeClass/SecondSubClass.litcoffee
-          SomeClass.SecondSubClass()\n  '
-
-Call `SomeClass::constructor(config)`. This will create the `@[oo._]` object. 
-
-        super config
+        M = '/shapelydee/src/Pixel.litcoffee
+          Pixel()\n  '
 
 
 Make `v()`, a function for checking that `config` properties are ok. 
@@ -36,16 +32,20 @@ Public Properties
 -----------------
 
 
-#### `x <number> 123`
-From `config.x`, @todo describe
+#### `origin <[number]>`
+Coordinates of the pixel. 
 
-        @x = v 'x <number>', 123
+        @origin = config.origin #@todo validate
 
 
 
 
 Private Properties
 ------------------
+
+Create `@[oo._]`, a non-enumerable property with an unguessable name. 
+
+        oo.define @, oo._, {}, 'private'
 
 
 #### `_x <null>`
@@ -58,7 +58,7 @@ Private Properties
 
 Prevent properties being accidentally modified or added to the instance. 
 
-        if 'SomeClass.SecondSubClass' == @C then oo.lock @
+        if 'Pixel' == @C then oo.lock @
 
 
 
@@ -74,8 +74,8 @@ Public Methods
 @todo describe
 
       xx: (yy) ->
-        M = '/shapelydee/src/SomeClass/SecondSubClass.litcoffee
-          SomeClass::xx()\n  '
+        M = '/shapelydee/src/Pixel.litcoffee
+          Pixel::xx()\n  '
 
 Check that the arguments are valid, or fallback to defaults if undefined. 
 
@@ -94,9 +94,9 @@ Public Static Functions
 
 @todo describe
 
-    SomeClass.SecondSubClass.xx = (yy) ->
-      M = '/shapelydee/src/SomeClass/SecondSubClass.litcoffee
-        SomeClass.SecondSubClass.xx()\n  '
+    Pixel.xx = (yy) ->
+      M = '/shapelydee/src/Pixel.litcoffee
+        Pixel.xx()\n  '
 
 Check that the arguments are valid, or fallback to defaults if undefined. 
 

@@ -10,9 +10,10 @@ ShapelyDee
 
 
 #### `constructor()`
-- `config <object> {}`       initial configuration
-  - `config.x <number> 123`  @todo describe
-- `<undefined>`              does not return anything
+- `config <object> {}`                  initial configuration
+  - `config.x <number> 123`             @todo describe
+  - `config.pixelCoords <[number]> []`  Coordinates of the initial Pixels
+- `<undefined>`                         does not return anything
 
 @todo describe
 
@@ -48,10 +49,20 @@ Create `@[oo._]`, a non-enumerable property with an unguessable name.
         oo.define @, oo._, {}, 'private'
 
 
-#### `_x <null>`
+#### `_shapes <[Shape]>`
 @todo describe
 
-        @[oo._]._x = null
+        @[oo._]._shapes = []
+
+
+#### `_pixels <[Pixel]>`
+@todo describe
+
+        @[oo._]._pixels = [] #@todo validate pixelCoords
+        px = config.pixelCoords || []
+        i = 0
+        while ! oo.isU px[i]
+          @[oo._]._pixels.push new Pixel { origin:[px[i++], px[i++], px[i++]] }
 
 
 
@@ -67,19 +78,71 @@ Public Methods
 --------------
 
 
-#### `xx()`
-- `yy <number> 123`  @todo describe
-- `<undefined>`      does not return anything
+#### `add()`
+- `config <object> {}`                    description of what will be added
+  - `config.a <string>`                   eg 'pixel' or 'cube'
+  - `config.origin <[number]6>`           coordinates of the pixel or shape
+  - `config.scale <[number]6> null`       (Optional) if a shape, its scale
+  - `config.rotation <[number]6> null`    (Optional) if a shape, its rotation
+  - `config.color <[number]6> null`       (Optional) if a shape, its RGB color
+  - `config.blend <string> 'screen'`      (Optional) if a shape, its blend-mode
+- `<number>`                              unique ID of the added item
+
+The origin, scale, rotation and color all take six values. The first three are 
+the current (x, y, z) values. The second three represent the direction and 
+magnitude of movement for x, y and z, relative to the first three values. So if 
+the second three are equal to the first, no movement will happen. 
+
+      add: (config) ->
+        M = '/shapelydee/src/ShapelyDee.litcoffee
+          ShapelyDee::add()\n  '
+
+Check that the config is valid, or fallback to defaults if undefined. 
+
+        v = oo.vObject M, 'config', config
+        a = v 'a <string ^pixel|cube$>'
+        origin   = config.origin
+        scale    = config.scale
+        rotation = config.rotation
+        color    = config.color
+        blend    = config.blend
+        #@todo remaining config
+
+        if 'pixel' == a
+          return @[oo._]._pixels.push new Pixel { origin:origin }
+
+        if 'cube' == a
+          return @[oo._]._shapes.push new Shape
+            origin  : config.origin
+            scale   : config.scale
+            rotation: config.rotation
+            color   : config.color
+            blend   : config.blend
+
+
+#### `dump()`
+- `format <string ^ascii|led$> 'led'`  the format to output
+- `<string|[integer]>`                 string if 'ascii', array if 'led'
 
 @todo describe
 
-      xx: (yy) ->
+      dump: (format) ->
         M = '/shapelydee/src/ShapelyDee.litcoffee
-          ShapelyDee::xx()\n  '
+          ShapelyDee::dump()\n  '
 
 Check that the arguments are valid, or fallback to defaults if undefined. 
 
-        yy = oo.vArg M, yy, 'yy <number>', 123
+        format = oo.vArg M, format, 'format <string ^ascii|led$>', 'led'
+
+Xx. 
+
+        if 'ascii' == format
+          return 'ASCII!' #@todo
+
+Xx. 
+
+        if 'led' == format
+          return [10,20,30] #@todo
 
 
 
