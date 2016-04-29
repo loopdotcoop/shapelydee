@@ -1,0 +1,46 @@
+{
+  "name": "shapelydee",
+  "version": "0.0.1",
+  "description": "LED pixel controller for VJs and installations",
+  "main": "build/shapelydee.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test",
+    "example": "usage"
+  },
+  "devDependencies": {
+    "apage": "latest",
+    "coffee-script": "latest",
+    "nodemon": "latest"
+  },
+  "dependencies": {
+  },
+  "keywords": [
+    "Microcontroller",
+    "MCU",
+    "Arduino",
+    "Espruino",
+    "LED",
+    "Pixel",
+    "NeoPixel",
+    "Addressable LED",
+    "CoffeeScript",
+    "Literate CoffeeScript"
+  ],
+  "scripts": {
+    "hi": "open .; open index.html; open test/run-test.html; subl .",
+    "build": "node oopish/bin/oopish-build",
+    "doc": "node_modules/apage/bin/apage -i README.md doc/*.md -o index.html -p \"`cat node_modules/apage/build/plugin/*.js`\"",
+    "test": "node test/run-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loopdotcoop/shapelydee.git"
+  },
+  "author": "Rich Plastow <rich@loop.coop> (http://loop.coop/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/loopdotcoop/shapelydee/issues"
+  },
+  "homepage": "http://shapelydee.loop.coop/"
+}

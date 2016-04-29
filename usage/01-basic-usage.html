@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ShapelyDee Basic Usage</title>
+
+  <!-- `w80a("alert this text!")` -->
+  <script>!function(c){var d=document,v=navigator.userAgent,A='addEventListener'
+  ,t=0,w=this,e=function(m,u,n){m===m+''?0:(n=m.lineno,u=m.filename,m=m.message)
+  c.w80a((u+':'+n).match(/[^\/]+?\/?[^\/]+$/)[0]+'\n'+m)};w.w80a=c.w80a=c.w80a||
+  function(o){o=++t+' '+o;c.w80f?c.w80f():0;!d.body?alert(o):(p=d.createElement(
+  'P'),d.body.appendChild(p),p.innerHTML='<pre style="position:fixed;z-index:9;\
+  top:40%;left:1em;right:1em;border:1em solid #600;background:#811;color:#ccc;"\
+  onclick="body.removeChild(this.parentNode)">'+o+'</pre>')}//@todo x-ua style
+  if(/efox\/(\d|[1-2]\d)\.|Presto|n\/4\.0 Saf/.test(v)){w.onerror=e}else{w[A]&&!
+  /MSIE 9/.test(v)?w[A]('error',e,0):w.attachEvent('onerror',e)}}(top)</script>
+
+  <!-- `w80f(3)` for a bright green favicon -->
+  <link rel=icon href=data:text;base64,Qk0eAAAAAAAAABoAAAAMAAAAAQABAAEAGAAAZhEA>
+  <script>function w80f(s){try{var l=document.querySelector('link[rel=icon]');l.
+  href=l.href.substr(0,53)+'APgP///4AA'.substr(s*2,2)+'AA'}catch(e){}}</script>
+
+  <!-- Polyfill `Object.keys()`, from goo.gl/o3kNwX -->
+  <script>if(!Object.keys){Object.keys=function(o){if(o!==Object(o)){
+  throw TypeError('Object.keys called on non-object')}var r=[],p;for(p in o){
+  if(Object.prototype.hasOwnProperty.call(o,p)){r.push(p)}}return r}}</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="usage.css">
+  <script src="../build/shapelydee.js"></script>
+  <script>
+addEventListener('load', function () {
+    var i, l
+
+        //// Micro jQuery. 
+      , $  = document.querySelector.bind(document)
+      , $$ = document.querySelectorAll.bind(document)
+
+        //// Element refs. 
+      , $$actions = $$('#actions .button')
+      , $log      =  $('#log')
+
+        //// Create a shapelydee instance. 
+      , shapelydee = new ShapelyDee({
+        })
+
+        //// Reveals the current state of `shapelydee`. 
+      , stringify = function () {
+            $log.innerHTML =
+                'JSON.stringify(shapelydee):\n\n'
+               + JSON.stringify(shapelydee, serializer(), '  ');
+        }
+
+        //// https://github.com/isaacs/json-stringify-safe/blob/master/stringify.js
+      , serializer = function () {
+            var
+                stack = []
+              , keys  = []
+
+              , cycleReplacer = function (key, value) {
+                    if (stack[0] === value) { return '[Circular ~]'; }
+                    return '[Circular ~.' + keys.slice(0, stack.indexOf(value)).join('.') + ']'
+                }
+            ;
+
+            return function (key, value) {
+                if (0 < stack.length) {
+                    var thisPos = stack.indexOf(this);
+                    ~thisPos ? stack.splice(thisPos + 1) : stack.push(this);
+                    ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key);
+                    if (~stack.indexOf(value)) { value = cycleReplacer.call(this, key, value); }
+                } else {
+                    stack.push(value)
+                }
+                return value;
+            }
+        }
+    ;
+
+    //// Enable the action buttons. 
+    for (i=0, l=$$actions.length; i<l; i++) {
+        $$actions[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            try {
+                eval(this.innerHTML);
+            } catch (error) {
+                $log.innerHTML = 'Error:\n\n' + error;
+                return;
+            }
+            stringify();
+        });
+    }
+
+    //// Reveal the initial state of `shapelydee`. 
+    stringify();
+});
+  </script>
+</head>
+<body>
+  <header>
+    <a href="../index.html" title="ShapelyDee Homepage">ShapelyDee</a><span
+    >/</span><a href="../index.html#/doc/usage" title="ShapelyDee Usage">Usage</a><span
+    >/</span><a href="01-basic-usage.html" title="Refresh this page">Basic Usage</a>
+  </header>
+  <main>
+    <nav id="actions">
+      <a href="#" class="button">shapelydee.add();</a><a
+         href="#" class="button">shapelydee.read();</a><a
+         href="#" class="button">shapelydee.browse();</a>
+    </nav>
+    <pre id="log">Loading...</pre>
+  </main>
+  <footer>
+    <a href="http://loop.coop/" title="Loop.Coop Homepage">Loop.Coop 2016</a>
+  </footer>
+</body>
+</html>
