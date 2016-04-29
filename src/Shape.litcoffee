@@ -36,6 +36,12 @@ Public Properties
 -----------------
 
 
+#### `id <string>`
+Unique identifier for this shape. Always begins with 's', to signify 'shape'. 
+
+        @id = 's' + config.id #@todo validate
+
+
 #### `origin <[number]>`
 Coordinates of the shape. 
 
@@ -96,19 +102,27 @@ Public Methods
 --------------
 
 
-#### `xx()`
-- `yy <number> 123`  @todo describe
-- `<undefined>`      does not return anything
+#### `renderId()`
+- `out <[array]>             array of arrays of single-character strings
+- `<[array]>`                modified version of the `out` argument
 
-@todo describe
+Render the shape’s `id` at its origin. When `ShapelyDee::dump()` is called, it 
+calls `renderSilhouette()` on each shape, and then calls `renderId()` on each 
+shape to overlay the `id`s. 
 
-      xx: (yy) ->
+      renderId: (out) ->
         M = '/shapelydee/src/Shape.litcoffee
-          Shape::xx()\n  '
+          Shape::renderId()\n  '
 
-Check that the arguments are valid, or fallback to defaults if undefined. 
-
-        yy = oo.vArg M, yy, 'yy <number>', 123
+        l = @id.length # an `id` is always at least 2 characters long
+        out[ @origin[1] + 10 ][ @origin[0] + 10 ].c = @id.charAt 0
+        if out[ @origin[1] + 10 ][ @origin[0] + 10 + 1 ]
+          out[ @origin[1] + 10 ][ @origin[0] + 10 + 1 ].c = @id.charAt 1
+        if 2 < l && out[ @origin[1] + 10 ][ @origin[0] + 10 + 2 ]
+          out[ @origin[1] + 10 ][ @origin[0] + 10 + 2 ].c = @id.charAt 2
+        if 3 < l && out[ @origin[1] + 10 ][ @origin[0] + 10 + 3 ]
+          out[ @origin[1] + 10 ][ @origin[0] + 10 + 3 ].c = @id.charAt 3
+        return out
 
 
 

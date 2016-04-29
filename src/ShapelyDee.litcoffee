@@ -62,7 +62,9 @@ Create `@[oo._]`, a non-enumerable property with an unguessable name.
         px = config.pixelCoords || []
         i = 0
         while ! oo.isU px[i]
-          @[oo._]._pixels.push new Pixel { origin:[px[i++], px[i++], px[i++]] }
+          @[oo._]._pixels.push new Pixel
+            id:     @[oo._]._pixels.length # id is based on index
+            origin: [ px[i++], px[i++], px[i++] ]
 
 
 
@@ -109,15 +111,18 @@ Check that the config is valid, or fallback to defaults if undefined.
         #@todo remaining config
 
         if 'pixel' == a
-          return @[oo._]._pixels.push new Pixel { origin:origin }
+          return @[oo._]._pixels.push new Pixel
+            id      : @[oo._]._pixels.length # id is based on index
+            origin  : origin
 
         if 'cube' == a
-          return @[oo._]._shapes.push new Shape
-            origin  : config.origin
-            scale   : config.scale
-            rotation: config.rotation
-            color   : config.color
-            blend   : config.blend
+          return @[oo._]._shapes.push new Shape.Cube
+            id      : @[oo._]._pixels.length # id is based on index
+            origin  : origin
+            scale   : scale
+            rotation: rotation
+            color   : color
+            blend   : blend
 
 
 #### `dump()`
@@ -137,7 +142,54 @@ Check that the arguments are valid, or fallback to defaults if undefined.
 Xx. 
 
         if 'ascii' == format
-          return 'ASCII!' #@todo
+
+Render the background grid as an array of arrays. 
+
+          out = []
+          for y in [0..21]
+            out[y] = []
+            for x in [0..21]
+              out[y].push
+                c: if 10 == x then '|' else if 10 == y then '-' else '·'
+                r: 0
+                g: 0
+                b: 0
+
+Draw each Shape’s silhoutte. 
+
+          for shape,i in @[oo._]._shapes
+            out = shape.renderSilhouette out
+
+Overlay each Shape’s `id`. 
+
+          for shape,i in @[oo._]._shapes
+            out = shape.renderId out
+
+Overlay each Pixel, and create a table showing each pixel’s color. 
+
+          table = []
+          for pixel,i in @[oo._]._pixels
+            loc = out[ pixel.origin[1] + 10 ][ pixel.origin[0] + 10 ] # location
+            loc.c = '*'
+            table.push { id:pixel.id, r:loc.r+'', g:loc.g+'', b:loc.b+'' }
+
+Convert each row to a string. 
+
+          for y in [0..21]
+            row = ''
+            for x in [0..21]
+              row += out[y][x].c
+            out[y] = row
+
+Append a table showing each pixel’s color. 
+
+          for row,i in table
+            out.push "#{oo.pad row.id,4}#{oo.rpad row.r,4}#{oo.rpad row.g,4}#{oo.rpad row.b,4}"
+
+Convert to a string and return the result. 
+
+          return out.join '\n'
+
 
 Xx. 
 

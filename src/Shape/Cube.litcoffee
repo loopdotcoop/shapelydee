@@ -36,10 +36,10 @@ Public Properties
 -----------------
 
 
-#### `x <number> 123`
-From `config.x`, @todo describe
+#### `id <string>`
+Unique identifier for this shape. Always begins with 'c', to signify 'cube'. 
 
-        @x = v 'x <number>', 123
+        @id = 'c' + config.id #@todo validate
 
 
 
@@ -67,20 +67,35 @@ Public Methods
 --------------
 
 
-#### `xx()`
-- `yy <number> 123`  @todo describe
-- `<undefined>`      does not return anything
+#### `renderSilhouette()`
+- `out <[array]>             array of arrays of single-character strings
+- `<[array]>`                modified version of the `out` argument
 
-@todo describe
+Render the shape’s silhouette as ASCII. 
 
-      xx: (yy) ->
-        M = '/shapelydee/src/Shape/Cube.litcoffee
-          Shape::xx()\n  '
+      renderSilhouette: (out) ->
+        M = '/shapelydee/src/Shape.litcoffee
+          Shape::renderSilhouette()\n  '
 
-Check that the arguments are valid, or fallback to defaults if undefined. 
+Calculate the cube’s bounds. 
 
-        yy = oo.vArg M, yy, 'yy <number>', 123
+        w = @scale[0] # width
+        h = @scale[1] # height
+        l = Math.max  0, @origin[0] - (Math.floor w / 2) + 10 # left
+        r = Math.min 21, @origin[0] + (Math.ceil  w / 2) + 10 # right
+        t = Math.max  0, @origin[1] - (Math.floor h / 2) + 10 # top
+        b = Math.min 21, @origin[1] + (Math.ceil  h / 2) + 10 # bottom
 
+Render the cube onto `out`. 
+
+        for y in [t..b]
+          for x in [l..r]
+            c = out[y][x].c
+            out[y][x].c = if '=' == c || '#' == c then '#' else '='
+            out[y][x].r = Math.min 255, out[y][x].r + @color[0]
+            out[y][x].g = Math.min 255, out[y][x].g + @color[1]
+            out[y][x].b = Math.min 255, out[y][x].b + @color[2] #@todo only calc where there is a pixel
+        return out
 
 
 

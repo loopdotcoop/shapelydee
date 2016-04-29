@@ -52,17 +52,17 @@ addEventListener('load', function () {
         $$actions[i].addEventListener('click', function (event) {
             event.preventDefault();
             try {
-                var result = eval(this.innerHTML);
+                var result = eval(this.title);
             } catch (error) {
                 $log.innerHTML = 'Error:\n\n' + error;
-                return;
+                throw error;
             }
             $log.innerHTML = result;
         });
     }
 
     //// Ready. 
-    $log.innerHTML = 'Ready. ';
+    $log.innerHTML = shapelydee.dump('ascii');
 });
   </script>
 </head>
@@ -74,10 +74,10 @@ addEventListener('load', function () {
   </header>
   <main>
     <nav id="actions">
-      <a href="#" class="button">shapelydee.add({ a:'pixel', origin:[0,0,0, 0,0,0] });</a><a
-         href="#" class="button">shapelydee.add({ a:'cube' , origin:[1,1,1, 2,2,2] });</a><a
-         href="#" class="button">shapelydee.dump('ascii');</a><a
-         href="#" class="button">shapelydee.dump('led');</a>
+      <a href="#" class="button" title="shapelydee.add({ a:'pixel', origin:[Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10)] });shapelydee.dump('ascii');">Add Pixel</a><a
+         href="#" class="button" title="shapelydee.add({ a:'cube' , color:[Math.floor(Math.random()*100),Math.floor(Math.random()*100),Math.floor(Math.random()*100)] , scale:[Math.ceil(Math.random()*4+2),Math.ceil(Math.random()*2+2),Math.ceil(Math.random()*4)], origin:[Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10)] });shapelydee.dump('ascii');">Add Cube</a><a
+         href="#" class="button" title="shapelydee.dump('ascii');">Dump ASCII</a><a
+         href="#" class="button" title="shapelydee.dump('led');">Dump LED</a>
     </nav>
     <pre id="log">Loading...</pre>
   </main>

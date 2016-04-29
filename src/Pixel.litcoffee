@@ -32,6 +32,12 @@ Public Properties
 -----------------
 
 
+#### `id <string>`
+Unique identifier for this shape. Always begins with 'p', to signify 'pixel'. 
+
+        @id = 'p' + config.id #@todo validate
+
+
 #### `origin <[number]>`
 Coordinates of the pixel. 
 
