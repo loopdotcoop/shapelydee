@@ -146,3 +146,23 @@ footer a:hover,
 .button:hover {
   color:           #0f9;
 }
+
+
+/* DUMP */
+#log div {
+  font-size: 0.7em;
+  height: 0.2em;
+  color: #808080;
+}
+#log div i,
+#log div b {
+  display:     inline-block;
+  padding:     1em 0.7em;
+  line-height: 0;
+}
+#log div i {
+  color: #fff;
+}
+
+
+

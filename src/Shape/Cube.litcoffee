@@ -82,9 +82,9 @@ Calculate the cube’s bounds.
         w = @scale[0] # width
         h = @scale[1] # height
         l = Math.max  0, @origin[0] - (Math.floor w / 2) + 10 # left
-        r = Math.min 21, @origin[0] + (Math.ceil  w / 2) + 10 # right
+        r = Math.min 20, @origin[0] + (Math.ceil  w / 2) + 10 # right
         t = Math.max  0, @origin[1] - (Math.floor h / 2) + 10 # top
-        b = Math.min 21, @origin[1] + (Math.ceil  h / 2) + 10 # bottom
+        b = Math.min 20, @origin[1] + (Math.ceil  h / 2) + 10 # bottom
 
 Render the cube onto `out`. 
 

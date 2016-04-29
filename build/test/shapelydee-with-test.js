@@ -532,7 +532,7 @@ ShapelyDee = (function() {
     }
     if ('cube' === a) {
       return this[oo._]._shapes.push(new Shape.Cube({
-        id: this[oo._]._pixels.length,
+        id: this[oo._]._shapes.length,
         origin: origin,
         scale: scale,
         rotation: rotation,
@@ -543,14 +543,14 @@ ShapelyDee = (function() {
   };
 
   ShapelyDee.prototype.dump = function(format) {
-    var M, aa, i, j, k, len, len1, len2, len3, loc, m, o, out, pixel, q, ref, ref1, ref2, row, shape, table, u, x, y, z;
+    var M, aa, ab, ac, i, j, k, len, len1, len2, len3, loc, m, o, out, pixel, q, ref, ref1, ref2, row, shape, table, u, x, y, z;
     M = '/shapelydee/src/ShapelyDee.litcoffee ShapelyDee::dump()\n  ';
-    format = oo.vArg(M, format, 'format <string ^ascii|led$>', 'led');
-    if ('ascii' === format) {
+    format = oo.vArg(M, format, 'format <string ^ascii|html|led$>', 'led');
+    if ('ascii' || 'html' === format) {
       out = [];
-      for (y = j = 0; j <= 21; y = ++j) {
+      for (y = j = 0; j <= 20; y = ++j) {
         out[y] = [];
-        for (x = k = 0; k <= 21; x = ++k) {
+        for (x = k = 0; k <= 20; x = ++k) {
           out[y].push({
             c: 10 === x ? '|' : 10 === y ? '-' : '·',
             r: 0,
@@ -582,14 +582,27 @@ ShapelyDee = (function() {
           b: loc.b + ''
         });
       }
-      for (y = u = 0; u <= 21; y = ++u) {
-        row = '';
-        for (x = z = 0; z <= 21; x = ++z) {
-          row += out[y][x].c;
+      if ('html' === format) {
+        for (y = u = 0; u <= 20; y = ++u) {
+          row = '<div>';
+          for (x = z = 0; z <= 20; x = ++z) {
+            loc = out[y][x];
+            row += '*' === loc.c ? '<i ' : '<b ';
+            row += "style='background:rgb(" + loc.r + "," + loc.g + "," + loc.b + ")'>" + loc.c;
+            row += '*' === loc.c ? '</i>' : '</b>';
+          }
+          out[y] = row + '</div>';
         }
-        out[y] = row;
+      } else {
+        for (y = aa = 0; aa <= 20; y = ++aa) {
+          row = '';
+          for (x = ab = 0; ab <= 20; x = ++ab) {
+            row += out[y][x].c;
+          }
+          out[y] = row;
+        }
       }
-      for (i = aa = 0, len3 = table.length; aa < len3; i = ++aa) {
+      for (i = ac = 0, len3 = table.length; ac < len3; i = ++ac) {
         row = table[i];
         out.push("" + (oo.pad(row.id, 4)) + (oo.rpad(row.r, 4)) + (oo.rpad(row.g, 4)) + (oo.rpad(row.b, 4)));
       }
@@ -647,9 +660,9 @@ Shape.Cube = (function(superClass) {
     w = this.scale[0];
     h = this.scale[1];
     l = Math.max(0, this.origin[0] - (Math.floor(w / 2)) + 10);
-    r = Math.min(21, this.origin[0] + (Math.ceil(w / 2)) + 10);
+    r = Math.min(20, this.origin[0] + (Math.ceil(w / 2)) + 10);
     t = Math.max(0, this.origin[1] - (Math.floor(h / 2)) + 10);
-    b = Math.min(21, this.origin[1] + (Math.ceil(h / 2)) + 10);
+    b = Math.min(20, this.origin[1] + (Math.ceil(h / 2)) + 10);
     for (y = j = ref = t, ref1 = b; ref <= ref1 ? j <= ref1 : j >= ref1; y = ref <= ref1 ? ++j : --j) {
       for (x = k = ref2 = l, ref3 = r; ref2 <= ref3 ? k <= ref3 : k >= ref3; x = ref2 <= ref3 ? ++k : --k) {
         c = out[y][x].c;

@@ -62,7 +62,7 @@ addEventListener('load', function () {
     }
 
     //// Ready. 
-    $log.innerHTML = shapelydee.dump('ascii');
+    $log.innerHTML = shapelydee.dump('html');
 });
   </script>
 </head>
@@ -74,8 +74,9 @@ addEventListener('load', function () {
   </header>
   <main>
     <nav id="actions">
-      <a href="#" class="button" title="shapelydee.add({ a:'pixel', origin:[Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10)] });shapelydee.dump('ascii');">Add Pixel</a><a
-         href="#" class="button" title="shapelydee.add({ a:'cube' , color:[Math.floor(Math.random()*100),Math.floor(Math.random()*100),Math.floor(Math.random()*100)] , scale:[Math.ceil(Math.random()*4+2),Math.ceil(Math.random()*2+2),Math.ceil(Math.random()*4)], origin:[Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10),Math.floor(Math.random()*22-10)] });shapelydee.dump('ascii');">Add Cube</a><a
+      <a href="#" class="button" title="shapelydee.add({ a:'pixel', origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump('html');">Add Pixel</a><a
+         href="#" class="button" title="shapelydee.add({ a:'cube' , color:[Math.floor(Math.random()*100),Math.floor(Math.random()*100),Math.floor(Math.random()*100)] , scale:[Math.ceil(Math.random()*4+2),Math.ceil(Math.random()*2+2),Math.ceil(Math.random()*4)], origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump('html');">Add Cube</a><a
+         href="#" class="button" title="shapelydee.dump('html');">Dump HTML</a><a
          href="#" class="button" title="shapelydee.dump('ascii');">Dump ASCII</a><a
          href="#" class="button" title="shapelydee.dump('led');">Dump LED</a>
     </nav>

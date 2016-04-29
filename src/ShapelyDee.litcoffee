@@ -117,7 +117,7 @@ Check that the config is valid, or fallback to defaults if undefined.
 
         if 'cube' == a
           return @[oo._]._shapes.push new Shape.Cube
-            id      : @[oo._]._pixels.length # id is based on index
+            id      : @[oo._]._shapes.length # id is based on index
             origin  : origin
             scale   : scale
             rotation: rotation
@@ -126,8 +126,8 @@ Check that the config is valid, or fallback to defaults if undefined.
 
 
 #### `dump()`
-- `format <string ^ascii|led$> 'led'`  the format to output
-- `<string|[integer]>`                 string if 'ascii', array if 'led'
+- `format <string ^ascii|html|led$> 'led'`  the format to output
+- `<string|[integer]>`                      array if 'led', otherwise string
 
 @todo describe
 
@@ -137,18 +137,18 @@ Check that the config is valid, or fallback to defaults if undefined.
 
 Check that the arguments are valid, or fallback to defaults if undefined. 
 
-        format = oo.vArg M, format, 'format <string ^ascii|led$>', 'led'
+        format = oo.vArg M, format, 'format <string ^ascii|html|led$>', 'led'
 
 Xx. 
 
-        if 'ascii' == format
+        if 'ascii' || 'html' == format
 
 Render the background grid as an array of arrays. 
 
           out = []
-          for y in [0..21]
+          for y in [0..20]
             out[y] = []
-            for x in [0..21]
+            for x in [0..20]
               out[y].push
                 c: if 10 == x then '|' else if 10 == y then '-' else '·'
                 r: 0
@@ -173,13 +173,26 @@ Overlay each Pixel, and create a table showing each pixel’s color.
             loc.c = '*'
             table.push { id:pixel.id, r:loc.r+'', g:loc.g+'', b:loc.b+'' }
 
-Convert each row to a string. 
+Convert each row to a string. Add color if the dump-format is 'html'...
 
-          for y in [0..21]
-            row = ''
-            for x in [0..21]
-              row += out[y][x].c
-            out[y] = row
+          if 'html' == format
+            for y in [0..20]
+              row = '<div>'
+              for x in [0..20]
+                loc = out[y][x]
+                row += if '*' == loc.c then '<i ' else '<b '
+                row += "style='background:rgb(#{loc.r},#{loc.g},#{loc.b})'>#{loc.c}"
+                row += if '*' == loc.c then '</i>' else '</b>'
+              out[y] = row + '</div>'
+
+...otherwise, just use plain text. 
+
+          else
+            for y in [0..20]
+              row = ''
+              for x in [0..20]
+                row += out[y][x].c
+              out[y] = row
 
 Append a table showing each pixel’s color. 
 
