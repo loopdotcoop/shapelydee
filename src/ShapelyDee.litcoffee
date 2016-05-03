@@ -49,6 +49,12 @@ Create `@[oo._]`, a non-enumerable property with an unguessable name.
         oo.define @, oo._, {}, 'private'
 
 
+#### `_format <string ^ascii|html|led$>`
+The most recent format passed to `dump()`. 
+
+        @[oo._]._format = 'led'
+
+
 #### `_shapes <[Shape]>`
 @todo describe
 
@@ -126,8 +132,8 @@ Check that the config is valid, or fallback to defaults if undefined.
 
 
 #### `dump()`
-- `format <string ^ascii|html|led$> 'led'`  the format to output
-- `<string|[integer]>`                      array if 'led', otherwise string
+- `format <string ^ascii|html|led$> _format`  the format to output
+- `<string|[integer]>`                        array if 'led', otherwise string
 
 @todo describe
 
@@ -135,13 +141,16 @@ Check that the config is valid, or fallback to defaults if undefined.
         M = '/shapelydee/src/ShapelyDee.litcoffee
           ShapelyDee::dump()\n  '
 
-Check that the arguments are valid, or fallback to defaults if undefined. 
+Check that `format` is valid, and record it so that subsequent calls to `dump()`
+can leave `format` blank. 
 
-        format = oo.vArg M, format, 'format <string ^ascii|html|led$>', 'led'
+        format = oo.vArg M, format, 'format <string ^ascii|html|led$>',
+          @[oo._]._format
+        @[oo._]._format = format
 
 Xx. 
 
-        if 'ascii' || 'html' == format
+        if 'ascii' == format || 'html' == format
 
 Render the background grid as an array of arrays. 
 

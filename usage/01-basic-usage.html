@@ -47,6 +47,10 @@ addEventListener('load', function () {
 
     ;
 
+    //// Animation for to show timed-usage. @todo
+    window.start12fps = function () { w80a('@todo start12fps()'); }
+    window.stop12fps  = function () { w80a('@todo stop12fps()'); }
+
     //// Enable the action buttons. 
     for (i=0, l=$$actions.length; i<l; i++) {
         $$actions[i].addEventListener('click', function (event) {
@@ -57,7 +61,7 @@ addEventListener('load', function () {
                 $log.innerHTML = 'Error:\n\n' + error;
                 throw error;
             }
-            $log.innerHTML = result;
+            if (result) $log.innerHTML = result;
         });
     }
 
@@ -74,11 +78,13 @@ addEventListener('load', function () {
   </header>
   <main>
     <nav id="actions">
-      <a href="#" class="button" title="shapelydee.add({ a:'pixel', origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump('html');">Add Pixel</a><a
-         href="#" class="button" title="shapelydee.add({ a:'cube' , color:[Math.floor(Math.random()*100),Math.floor(Math.random()*100),Math.floor(Math.random()*100)] , scale:[Math.ceil(Math.random()*4+2),Math.ceil(Math.random()*2+2),Math.ceil(Math.random()*4)], origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump('html');">Add Cube</a><a
+      <a href="#" class="button" title="shapelydee.add({ a:'pixel', origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump();">Add Pixel</a><a
+         href="#" class="button" title="shapelydee.add({ a:'cube' , color:[Math.floor(Math.random()*100),Math.floor(Math.random()*100),Math.floor(Math.random()*100)] , scale:[Math.ceil(Math.random()*4+2),Math.ceil(Math.random()*2+2),Math.ceil(Math.random()*4)], origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump();">Add Cube</a><a
          href="#" class="button" title="shapelydee.dump('html');">Dump HTML</a><a
          href="#" class="button" title="shapelydee.dump('ascii');">Dump ASCII</a><a
-         href="#" class="button" title="shapelydee.dump('led');">Dump LED</a>
+         href="#" class="button" title="shapelydee.dump('led');">Dump LED</a><a
+         href="#" class="button" title="start12fps();shapelydee.dump();">Start 12fps HTML</a><a
+         href="#" class="button" title="stop12fps();shapelydee.dump();">Stop 12fps HTML</a>
     </nav>
     <pre id="log">Loading...</pre>
   </main>
