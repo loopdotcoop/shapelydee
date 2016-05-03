@@ -40,16 +40,104 @@ addEventListener('load', function () {
       , $$actions = $$('#actions .button')
       , $log      =  $('#log')
 
-        //// Create a shapelydee instance with two pixels. 
+        //// Create a shapelydee instance with one pixel. 
       , shapelydee = new ShapelyDee({
-          pixelCoords: [ 0,1,2,  4,5,6 ]
+          pixelCoords: [ -10, -10, -10 ]
         })
 
+        //// Animation variables. 
+      , start = +(new Date())
+      , animId
+
+        //// Create variables. 
+      , previousPixel = [ -10, -10, -10 ]
     ;
 
-    //// Animation for to show timed-usage. @todo
-    window.start12fps = function () { w80a('@todo start12fps()'); }
-    window.stop12fps  = function () { w80a('@todo stop12fps()'); }
+    //// Animation to show timed-usage. 
+    window.start12fps = function () {
+      if (animId) return w80a('start12fps()\n  Already playing');
+      animId = setInterval( function () {
+        $log.innerHTML = shapelydee.dump( undefined, +(new Date()) );
+      }, 1000 / 12);
+    }
+    window.stop12fps  = function () {
+      if (! animId) return w80a('stop12fps()\n  Already stopped');
+      clearInterval(animId);
+      animId = null;
+    }
+
+    //// Create pixel and cube instances. 
+    window.addPixel = function () {
+      var origin = [
+          previousPixel[0] + Math.floor(Math.random()*4)
+        , previousPixel[1] + Math.floor(Math.random()*4)
+        , previousPixel[2] + Math.floor(Math.random()*4)
+      ];
+      if ( 10 < origin[0] || 10 < origin[1] || 10 < origin[2] ) {
+        origin = [
+            Math.floor(Math.random()*21-10)
+          , Math.floor(Math.random()*21-10)
+          , Math.floor(Math.random()*21-10)
+        ];
+      }
+      shapelydee.add({
+          a: 'pixel'
+        , origin: origin
+      });
+      previousPixel = origin;
+      return shapelydee.dump( undefined, +(new Date()) );
+    }
+    window.addCube = function () {
+      shapelydee.add({
+          a: 'cube'
+        , created: +(new Date()) // `+ 2000` to delay adding by 2 seconds
+        , origin: [
+              Math.random()*21-10 // x
+            , Math.random()*21-10 // y
+            , Math.random()*21-10 // z
+            , 0 // not moving in the x direction
+            , 0 // not moving in the y direction
+            , 0 // not moving in the z direction
+          ]
+        , scale: [
+              Math.random()*4+2 // x
+            , Math.random()*2+2 // y
+            , Math.random()*4   // z
+          ]
+        , color: [
+              Math.floor(Math.random()*100) // r
+            , Math.floor(Math.random()*100) // g
+            , Math.floor(Math.random()*100) // b
+          ]
+      });
+      return shapelydee.dump( undefined, +(new Date()) );
+    }
+    window.addMovingCube = function () {
+      var origin = [
+          Math.random()*21-10 // x
+        , Math.random()*21-10 // y
+        , Math.random()*21-10 // z
+      ];
+      origin[3] = (0 - origin[0]) / 4; // movement in the x direction
+      origin[4] = (0 - origin[1]) / 4; // movement in the y direction
+      origin[5] = (0 - origin[2]) / 4; // movement in the z direction
+      shapelydee.add({
+          a: 'cube'
+        , created: +(new Date())
+        , origin: origin
+        , scale: [
+              Math.random()*4+2 // x
+            , Math.random()*2+2 // y
+            , Math.random()*4   // z
+          ]
+        , color: [
+              Math.floor(Math.random()*100) // r
+            , Math.floor(Math.random()*100) // g
+            , Math.floor(Math.random()*100) // b
+          ]
+      });
+      return shapelydee.dump( undefined, +(new Date()) );
+    }
 
     //// Enable the action buttons. 
     for (i=0, l=$$actions.length; i<l; i++) {
@@ -66,7 +154,7 @@ addEventListener('load', function () {
     }
 
     //// Ready. 
-    $log.innerHTML = shapelydee.dump('html');
+    $log.innerHTML = shapelydee.dump( 'html', +(new Date()) );
 });
   </script>
 </head>
@@ -78,13 +166,14 @@ addEventListener('load', function () {
   </header>
   <main>
     <nav id="actions">
-      <a href="#" class="button" title="shapelydee.add({ a:'pixel', origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump();">Add Pixel</a><a
-         href="#" class="button" title="shapelydee.add({ a:'cube' , color:[Math.floor(Math.random()*100),Math.floor(Math.random()*100),Math.floor(Math.random()*100)] , scale:[Math.ceil(Math.random()*4+2),Math.ceil(Math.random()*2+2),Math.ceil(Math.random()*4)], origin:[Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10),Math.floor(Math.random()*21-10)] });shapelydee.dump();">Add Cube</a><a
-         href="#" class="button" title="shapelydee.dump('html');">Dump HTML</a><a
-         href="#" class="button" title="shapelydee.dump('ascii');">Dump ASCII</a><a
-         href="#" class="button" title="shapelydee.dump('led');">Dump LED</a><a
-         href="#" class="button" title="start12fps();shapelydee.dump();">Start 12fps HTML</a><a
-         href="#" class="button" title="stop12fps();shapelydee.dump();">Stop 12fps HTML</a>
+      <a href="#" class="button" title="addPixel()">Add Pixel</a><a
+         href="#" class="button" title="addCube()">Add Cube</a><a
+         href="#" class="button" title="addMovingCube()">Add Moving Cube</a><a
+         href="#" class="button" title="shapelydee.dump( 'html', +(new Date()) );">Dump HTML</a><a
+         href="#" class="button" title="shapelydee.dump( 'ascii', +(new Date()) );">Dump ASCII</a><a
+         href="#" class="button" title="shapelydee.dump( 'led', +(new Date()) );">Dump LED</a><a
+         href="#" class="button" title="start12fps();shapelydee.dump( undefined, +(new Date()) );">Start 12fps HTML</a><a
+         href="#" class="button" title="stop12fps();shapelydee.dump( undefined, +(new Date()) );">Stop 12fps HTML</a>
     </nav>
     <pre id="log">Loading...</pre>
   </main>

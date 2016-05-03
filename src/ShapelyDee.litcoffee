@@ -90,12 +90,14 @@ Public Methods
 - `config <object> {}`                    description of what will be added
   - `config.a <string>`                   eg 'pixel' or 'cube'
   - `config.origin <[number]6>`           coordinates of the pixel or shape
+  - `config.created <number>`             (Optional) if a shape, when created
   - `config.scale <[number]6> null`       (Optional) if a shape, its scale
   - `config.rotation <[number]6> null`    (Optional) if a shape, its rotation
   - `config.color <[number]6> null`       (Optional) if a shape, its RGB color
   - `config.blend <string> 'screen'`      (Optional) if a shape, its blend-mode
 - `<number>`                              unique ID of the added item
 
+`created` is the time that a shape starts its existance. But pixels are eternal.
 The origin, scale, rotation and color all take six values. The first three are 
 the current (x, y, z) values. The second three represent the direction and 
 magnitude of movement for x, y and z, relative to the first three values. So if 
@@ -110,6 +112,7 @@ Check that the config is valid, or fallback to defaults if undefined.
         v = oo.vObject M, 'config', config
         a = v 'a <string ^pixel|cube$>'
         origin   = config.origin
+        created  = config.created
         scale    = config.scale
         rotation = config.rotation
         color    = config.color
@@ -125,6 +128,7 @@ Check that the config is valid, or fallback to defaults if undefined.
           return @[oo._]._shapes.push new Shape.Cube
             id      : @[oo._]._shapes.length # id is based on index
             origin  : origin
+            created : created
             scale   : scale
             rotation: rotation
             color   : color
@@ -133,20 +137,23 @@ Check that the config is valid, or fallback to defaults if undefined.
 
 #### `dump()`
 - `format <string ^ascii|html|led$> _format`  the format to output
+- `moment <number>`                           timestamp of the moment to render
 - `<string|[integer]>`                        array if 'led', otherwise string
 
 @todo describe
 
-      dump: (format) ->
+      dump: (format, moment) ->
         M = '/shapelydee/src/ShapelyDee.litcoffee
           ShapelyDee::dump()\n  '
 
-Check that `format` is valid, and record it so that subsequent calls to `dump()`
-can leave `format` blank. 
+Check the arguments are valid. Record `format` so that subsequent calls to 
+`dump()` can leave `format` blank. 
 
         format = oo.vArg M, format, 'format <string ^ascii|html|led$>',
           @[oo._]._format
         @[oo._]._format = format
+
+        oo.vArg M, moment, 'moment <number>'
 
 Xx. 
 
@@ -167,12 +174,12 @@ Render the background grid as an array of arrays.
 Draw each Shape’s silhoutte. 
 
           for shape,i in @[oo._]._shapes
-            out = shape.renderSilhouette out
+            out = shape.renderSilhouette out, moment
 
 Overlay each Shape’s `id`. 
 
           for shape,i in @[oo._]._shapes
-            out = shape.renderId out
+            out = shape.renderId out, moment
 
 Overlay each Pixel, and create a table showing each pixel’s color. 
 
@@ -203,10 +210,17 @@ Convert each row to a string. Add color if the dump-format is 'html'...
                 row += out[y][x].c
               out[y] = row
 
-Append a table showing each pixel’s color. 
+Append a table showing each pixel’s color, either in 'html' format... 
 
-          for row,i in table
-            out.push "#{oo.pad row.id,4}#{oo.rpad row.r,4}#{oo.rpad row.g,4}#{oo.rpad row.b,4}"
+          if 'html' == format
+            for row,i in table
+              out.push "<b style='color:rgb(#{row.r},#{row.g},#{row.b})'>#{oo.pad row.id,4}</b>#{oo.rpad row.r,4}#{oo.rpad row.g,4}#{oo.rpad row.b,4}"
+
+...or plain text. 
+
+          else
+            for row,i in table
+              out.push "#{oo.pad row.id,4}#{oo.rpad row.r,4}#{oo.rpad row.g,4}#{oo.rpad row.b,4}"
 
 Convert to a string and return the result. 
 

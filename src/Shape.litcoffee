@@ -11,6 +11,7 @@ Shape
 
 #### `constructor()`
 - `config <object> {}`            initial configuration
+  - `config.created  <number>`    @todo describe
   - `config.origin   <[number]>`  @todo describe
   - `config.scale    <[number]>`  @todo describe
   - `config.rotation <[number]>`  @todo describe
@@ -40,6 +41,12 @@ Public Properties
 Unique identifier for this shape. Always begins with 's', to signify 'shape'. 
 
         @id = 's' + config.id #@todo validate
+
+
+#### `created <number>`
+The timestamp in milliseconds that the shape should be added. 
+
+        @created = config.created #@todo validate
 
 
 #### `origin <[number]>`
@@ -104,24 +111,42 @@ Public Methods
 
 #### `renderId()`
 - `out <[array]>             array of arrays of single-character strings
+- `moment <number>`          timestamp of the moment to render
 - `<[array]>`                modified version of the `out` argument
 
 Render the shape’s `id` at its origin. When `ShapelyDee::dump()` is called, it 
 calls `renderSilhouette()` on each shape, and then calls `renderId()` on each 
 shape to overlay the `id`s. 
 
-      renderId: (out) ->
+      renderId: (out, moment) ->
         M = '/shapelydee/src/Shape.litcoffee
           Shape::renderId()\n  '
 
-        l = @id.length # an `id` is always at least 2 characters long
-        out[ @origin[1] + 10 ][ @origin[0] + 10 ].c = @id.charAt 0
-        if out[ @origin[1] + 10 ][ @origin[0] + 10 + 1 ]
-          out[ @origin[1] + 10 ][ @origin[0] + 10 + 1 ].c = @id.charAt 1
-        if 2 < l && out[ @origin[1] + 10 ][ @origin[0] + 10 + 2 ]
-          out[ @origin[1] + 10 ][ @origin[0] + 10 + 2 ].c = @id.charAt 2
-        if 3 < l && out[ @origin[1] + 10 ][ @origin[0] + 10 + 3 ]
-          out[ @origin[1] + 10 ][ @origin[0] + 10 + 3 ].c = @id.charAt 3
+Don’t render if the shape does not exist yet. 
+
+        if @created > moment then return out
+
+Calculate the origin at the given moment. 
+
+        age = (moment - @created) / 1000 # age in seconds
+        origin = [
+          Math.round @origin[0] + ( @origin[3] * age ) # x
+          Math.round @origin[1] + ( @origin[4] * age ) # y
+          Math.round @origin[2] + ( @origin[5] * age ) # z
+        ]
+
+Draw the id, if within bounds. 
+
+        row = out[ origin[1] + 10 ]
+        if row
+          i = 0
+          l = @id.length # an `id` is always at least 2 characters long
+          while i<l
+            row[ origin[0] + 10 + i ]?.c = @id.charAt i
+            i++
+
+Xx. 
+
         return out
 
 
