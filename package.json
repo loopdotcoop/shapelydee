@@ -1,6 +1,6 @@
 {
   "name": "shapelydee",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "LED pixel controller for VJs and installations",
   "main": "build/shapelydee.js",
   "directories": {

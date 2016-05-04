@@ -230,7 +230,15 @@ Convert to a string and return the result.
 Xx. 
 
         if 'led' == format
-          return [10,20,30] #@todo
+
+          out = []
+          for pixel in @[oo._]._pixels
+            color = [0,0,0]
+            for shape in @[oo._]._shapes
+              color = shape.blend color, pixel.origin, moment
+            out = out.concat color
+
+          return out
 
 
 

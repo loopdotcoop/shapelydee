@@ -54,14 +54,14 @@ addEventListener('load', function () {
     ;
 
     //// Animation to show timed-usage. 
-    window.start12fps = function () {
-      if (animId) return w80a('start12fps()\n  Already playing');
+    window.startAnimation = function () {
+      if (animId) return w80a('startAnimation()\n  Already playing');
       animId = setInterval( function () {
         $log.innerHTML = shapelydee.dump( undefined, +(new Date()) );
-      }, 1000 / 12);
+      }, 1000 / 12); // 12 fps
     }
-    window.stop12fps  = function () {
-      if (! animId) return w80a('stop12fps()\n  Already stopped');
+    window.stopAnimation  = function () {
+      if (! animId) return w80a('stopAnimation()\n  Already stopped');
       clearInterval(animId);
       animId = null;
     }
@@ -172,8 +172,8 @@ addEventListener('load', function () {
          href="#" class="button" title="shapelydee.dump( 'html', +(new Date()) );">Dump HTML</a><a
          href="#" class="button" title="shapelydee.dump( 'ascii', +(new Date()) );">Dump ASCII</a><a
          href="#" class="button" title="shapelydee.dump( 'led', +(new Date()) );">Dump LED</a><a
-         href="#" class="button" title="start12fps();shapelydee.dump( undefined, +(new Date()) );">Start 12fps HTML</a><a
-         href="#" class="button" title="stop12fps();shapelydee.dump( undefined, +(new Date()) );">Stop 12fps HTML</a>
+         href="#" class="button" title="startAnimation();shapelydee.dump( undefined, +(new Date()) );">Start Animation</a><a
+         href="#" class="button" title="stopAnimation();shapelydee.dump( undefined, +(new Date()) );">Stop Animation</a>
     </nav>
     <pre id="log">Loading...</pre>
   </main>
